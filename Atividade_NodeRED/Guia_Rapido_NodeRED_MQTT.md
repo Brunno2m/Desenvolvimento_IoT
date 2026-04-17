@@ -15,6 +15,11 @@ docker run -d --name nodered -p 1880:1880 -v ~/nodered-data:/data --restart unle
 ## 3. Instalar dashboard
 - Menu -> Manage palette -> Install -> node-red-dashboard
 
+Se aparecer aviso de no configurado em `ui_gauge` ou `ui_text`:
+- Confirme que o pacote instalado e `node-red-dashboard` (Dashboard 1.x).
+- Se tiver instalado `@flowfuse/node-red-dashboard`, remova para evitar conflito nesta atividade.
+- Exclua o flow antigo no editor e importe novamente o arquivo `flows_nodered_mqtt_dashboard.json` atualizado.
+
 ## 4. Importar flow
 - Importar arquivo: flows_nodered_mqtt_dashboard.json
 - Conferir broker MQTT em localhost:1883 (ou editar para seu host).

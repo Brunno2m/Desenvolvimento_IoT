@@ -2,12 +2,12 @@
   {
     "id": "f1a2b3c4d5e6f7a8",
     "type": "tab",
-    "label": "IoT MQTT Dashboard",
+    "label": "Painel de controle MQTT da IoT",
     "disabled": false,
     "info": "Fluxo Node-RED para monitoramento e atuacao via MQTT"
   },
   {
-    "id": "mqtt_broker_local",
+    "id": "a1b2c3d4e5f6a7b8",
     "type": "mqtt-broker",
     "name": "Broker Local",
     "broker": "localhost",
@@ -35,18 +35,19 @@
     "sessionExpiry": ""
   },
   {
-    "id": "ui_tab_iot",
+    "id": "b1c2d3e4f5a6b7c8",
     "type": "ui_tab",
     "name": "Monitor IoT",
     "icon": "dashboard",
+    "order": 1,
     "disabled": false,
     "hidden": false
   },
   {
-    "id": "ui_group_monitoramento",
+    "id": "c1d2e3f4a5b6c7d8",
     "type": "ui_group",
     "name": "Monitoramento",
-    "tab": "ui_tab_iot",
+    "tab": "b1c2d3e4f5a6b7c8",
     "order": 1,
     "disp": true,
     "width": "12",
@@ -54,10 +55,10 @@
     "className": ""
   },
   {
-    "id": "ui_group_controle",
+    "id": "d1e2f3a4b5c6d7e8",
     "type": "ui_group",
     "name": "Controle",
-    "tab": "ui_tab_iot",
+    "tab": "b1c2d3e4f5a6b7c8",
     "order": 2,
     "disp": true,
     "width": "12",
@@ -72,19 +73,14 @@
     "topic": "escola/turma1/iot/temperatura",
     "qos": "1",
     "datatype": "auto",
-    "broker": "mqtt_broker_local",
+    "broker": "a1b2c3d4e5f6a7b8",
     "nl": false,
     "rap": true,
     "rh": 0,
     "inputs": 0,
     "x": 170,
     "y": 120,
-    "wires": [
-      [
-        "func_to_number",
-        "ui_chart_temp"
-      ]
-    ]
+    "wires": [["func_to_number", "ui_chart_temp"]]
   },
   {
     "id": "func_to_number",
@@ -97,20 +93,16 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 400,
+    "x": 410,
     "y": 120,
-    "wires": [
-      [
-        "ui_gauge_temp"
-      ]
-    ]
+    "wires": [["ui_gauge_temp"]]
   },
   {
     "id": "ui_gauge_temp",
     "type": "ui_gauge",
     "z": "f1a2b3c4d5e6f7a8",
     "name": "Temperatura",
-    "group": "ui_group_monitoramento",
+    "group": "c1d2e3f4a5b6c7d8",
     "order": 1,
     "width": 6,
     "height": 4,
@@ -120,15 +112,11 @@
     "format": "{{value}}",
     "min": 0,
     "max": "60",
-    "colors": [
-      "#00b500",
-      "#e6e600",
-      "#ca3838"
-    ],
+    "colors": ["#00b500", "#e6e600", "#ca3838"],
     "seg1": "25",
     "seg2": "40",
     "className": "",
-    "x": 640,
+    "x": 650,
     "y": 120,
     "wires": []
   },
@@ -137,7 +125,7 @@
     "type": "ui_chart",
     "z": "f1a2b3c4d5e6f7a8",
     "name": "Historico Temperatura",
-    "group": "ui_group_monitoramento",
+    "group": "c1d2e3f4a5b6c7d8",
     "order": 2,
     "width": 12,
     "height": 4,
@@ -156,61 +144,45 @@
     "cutout": 0,
     "useOneColor": false,
     "useUTC": false,
-    "colors": [
-      "#1f77b4",
-      "#aec7e8",
-      "#ff7f0e",
-      "#2ca02c",
-      "#98df8a",
-      "#d62728",
-      "#ff9896",
-      "#9467bd",
-      "#c5b0d5"
-    ],
+    "colors": ["#1f77b4", "#aec7e8", "#ff7f0e", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5"],
     "outputs": 1,
     "useDifferentColor": false,
     "className": "",
-    "x": 420,
+    "x": 430,
     "y": 180,
-    "wires": [
-      []
-    ]
+    "wires": [[]]
   },
   {
     "id": "mqtt_in_status",
     "type": "mqtt in",
     "z": "f1a2b3c4d5e6f7a8",
-    "name": "Status Sistema",
+    "name": "Status sistema",
     "topic": "escola/turma1/iot/status",
     "qos": "1",
     "datatype": "auto",
-    "broker": "mqtt_broker_local",
+    "broker": "a1b2c3d4e5f6a7b8",
     "nl": false,
     "rap": true,
     "rh": 0,
     "inputs": 0,
     "x": 170,
     "y": 260,
-    "wires": [
-      [
-        "ui_text_status"
-      ]
-    ]
+    "wires": [["ui_text_status"]]
   },
   {
     "id": "ui_text_status",
     "type": "ui_text",
     "z": "f1a2b3c4d5e6f7a8",
-    "group": "ui_group_monitoramento",
+    "group": "c1d2e3f4a5b6c7d8",
     "order": 3,
     "width": 6,
     "height": 1,
-    "name": "Status Atual",
+    "name": "Status atual",
     "label": "Status",
     "format": "{{msg.payload}}",
     "layout": "row-spread",
     "className": "",
-    "x": 420,
+    "x": 430,
     "y": 260,
     "wires": []
   },
@@ -221,7 +193,7 @@
     "name": "Atuador",
     "label": "Atuador",
     "tooltip": "Liga/Desliga atuador",
-    "group": "ui_group_controle",
+    "group": "d1e2f3a4b5c6d7e8",
     "order": 1,
     "width": 6,
     "height": 1,
@@ -239,11 +211,7 @@
     "offcolor": "",
     "x": 150,
     "y": 360,
-    "wires": [
-      [
-        "func_cmd_payload"
-      ]
-    ]
+    "wires": [["func_cmd_payload"]]
   },
   {
     "id": "func_cmd_payload",
@@ -258,11 +226,7 @@
     "libs": [],
     "x": 390,
     "y": 360,
-    "wires": [
-      [
-        "mqtt_out_cmd"
-      ]
-    ]
+    "wires": [["mqtt_out_cmd"]]
   },
   {
     "id": "mqtt_out_cmd",
@@ -277,7 +241,7 @@
     "userProps": "",
     "correl": "",
     "expiry": "",
-    "broker": "mqtt_broker_local",
+    "broker": "a1b2c3d4e5f6a7b8",
     "x": 650,
     "y": 360,
     "wires": []
@@ -287,7 +251,7 @@
     "type": "ui_button",
     "z": "f1a2b3c4d5e6f7a8",
     "name": "Ping",
-    "group": "ui_group_controle",
+    "group": "d1e2f3a4b5c6d7e8",
     "order": 2,
     "width": 6,
     "height": 1,
@@ -301,24 +265,16 @@
     "payload": "PING",
     "payloadType": "str",
     "topic": "escola/turma1/iot/comando",
-    "x": 140,
+    "x": 150,
     "y": 420,
-    "wires": [
-      [
-        "mqtt_out_cmd"
-      ]
-    ]
+    "wires": [["mqtt_out_cmd"]]
   },
   {
     "id": "inject_simulador",
     "type": "inject",
     "z": "f1a2b3c4d5e6f7a8",
     "name": "Simular telemetria a cada 10s",
-    "props": [
-      {
-        "p": "payload"
-      }
-    ],
+    "props": [{ "p": "payload" }],
     "repeat": "10",
     "crontab": "",
     "once": true,
@@ -326,13 +282,9 @@
     "topic": "",
     "payload": "",
     "payloadType": "date",
-    "x": 190,
+    "x": 210,
     "y": 520,
-    "wires": [
-      [
-        "func_simulador"
-      ]
-    ]
+    "wires": [["func_simulador"]]
   },
   {
     "id": "func_simulador",
@@ -345,16 +297,9 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 420,
+    "x": 430,
     "y": 520,
-    "wires": [
-      [
-        "mqtt_out_sim"
-      ],
-      [
-        "mqtt_out_sim"
-      ]
-    ]
+    "wires": [["mqtt_out_sim"], ["mqtt_out_sim"]]
   },
   {
     "id": "mqtt_out_sim",
@@ -369,8 +314,8 @@
     "userProps": "",
     "correl": "",
     "expiry": "",
-    "broker": "mqtt_broker_local",
-    "x": 700,
+    "broker": "a1b2c3d4e5f6a7b8",
+    "x": 710,
     "y": 520,
     "wires": []
   }
