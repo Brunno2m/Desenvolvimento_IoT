@@ -1,0 +1,377 @@
+[
+  {
+    "id": "f1a2b3c4d5e6f7a8",
+    "type": "tab",
+    "label": "IoT MQTT Dashboard",
+    "disabled": false,
+    "info": "Fluxo Node-RED para monitoramento e atuacao via MQTT"
+  },
+  {
+    "id": "mqtt_broker_local",
+    "type": "mqtt-broker",
+    "name": "Broker Local",
+    "broker": "localhost",
+    "port": "1883",
+    "clientid": "nodered-dashboard-client",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "autoUnsubscribe": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthRetain": "false",
+    "birthPayload": "",
+    "closeTopic": "",
+    "closeQos": "0",
+    "closeRetain": "false",
+    "closePayload": "",
+    "willTopic": "",
+    "willQos": "0",
+    "willRetain": "false",
+    "willPayload": "",
+    "userProps": "",
+    "sessionExpiry": ""
+  },
+  {
+    "id": "ui_tab_iot",
+    "type": "ui_tab",
+    "name": "Monitor IoT",
+    "icon": "dashboard",
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_group_monitoramento",
+    "type": "ui_group",
+    "name": "Monitoramento",
+    "tab": "ui_tab_iot",
+    "order": 1,
+    "disp": true,
+    "width": "12",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "ui_group_controle",
+    "type": "ui_group",
+    "name": "Controle",
+    "tab": "ui_tab_iot",
+    "order": 2,
+    "disp": true,
+    "width": "12",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "mqtt_in_temp",
+    "type": "mqtt in",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Temperatura",
+    "topic": "escola/turma1/iot/temperatura",
+    "qos": "1",
+    "datatype": "auto",
+    "broker": "mqtt_broker_local",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 170,
+    "y": 120,
+    "wires": [
+      [
+        "func_to_number",
+        "ui_chart_temp"
+      ]
+    ]
+  },
+  {
+    "id": "func_to_number",
+    "type": "function",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Normaliza temperatura",
+    "func": "const v = Number(msg.payload);\nif (Number.isNaN(v)) {\n    return null;\n}\nmsg.payload = v;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 400,
+    "y": 120,
+    "wires": [
+      [
+        "ui_gauge_temp"
+      ]
+    ]
+  },
+  {
+    "id": "ui_gauge_temp",
+    "type": "ui_gauge",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Temperatura",
+    "group": "ui_group_monitoramento",
+    "order": 1,
+    "width": 6,
+    "height": 4,
+    "gtype": "gage",
+    "title": "Temperatura",
+    "label": "°C",
+    "format": "{{value}}",
+    "min": 0,
+    "max": "60",
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "25",
+    "seg2": "40",
+    "className": "",
+    "x": 640,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "ui_chart_temp",
+    "type": "ui_chart",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Historico Temperatura",
+    "group": "ui_group_monitoramento",
+    "order": 2,
+    "width": 12,
+    "height": 4,
+    "label": "Historico de Temperatura",
+    "chartType": "line",
+    "legend": "false",
+    "xformat": "HH:mm:ss",
+    "interpolate": "linear",
+    "nodata": "Aguardando dados",
+    "dot": false,
+    "ymin": "",
+    "ymax": "",
+    "removeOlder": "1",
+    "removeOlderPoints": "",
+    "removeOlderUnit": "3600",
+    "cutout": 0,
+    "useOneColor": false,
+    "useUTC": false,
+    "colors": [
+      "#1f77b4",
+      "#aec7e8",
+      "#ff7f0e",
+      "#2ca02c",
+      "#98df8a",
+      "#d62728",
+      "#ff9896",
+      "#9467bd",
+      "#c5b0d5"
+    ],
+    "outputs": 1,
+    "useDifferentColor": false,
+    "className": "",
+    "x": 420,
+    "y": 180,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "mqtt_in_status",
+    "type": "mqtt in",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Status Sistema",
+    "topic": "escola/turma1/iot/status",
+    "qos": "1",
+    "datatype": "auto",
+    "broker": "mqtt_broker_local",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 170,
+    "y": 260,
+    "wires": [
+      [
+        "ui_text_status"
+      ]
+    ]
+  },
+  {
+    "id": "ui_text_status",
+    "type": "ui_text",
+    "z": "f1a2b3c4d5e6f7a8",
+    "group": "ui_group_monitoramento",
+    "order": 3,
+    "width": 6,
+    "height": 1,
+    "name": "Status Atual",
+    "label": "Status",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "className": "",
+    "x": 420,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "ui_switch_cmd",
+    "type": "ui_switch",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Atuador",
+    "label": "Atuador",
+    "tooltip": "Liga/Desliga atuador",
+    "group": "ui_group_controle",
+    "order": 1,
+    "width": 6,
+    "height": 1,
+    "passthru": true,
+    "decouple": "false",
+    "topic": "",
+    "style": "",
+    "onvalue": "true",
+    "onvalueType": "bool",
+    "onicon": "",
+    "oncolor": "",
+    "offvalue": "false",
+    "offvalueType": "bool",
+    "officon": "",
+    "offcolor": "",
+    "x": 150,
+    "y": 360,
+    "wires": [
+      [
+        "func_cmd_payload"
+      ]
+    ]
+  },
+  {
+    "id": "func_cmd_payload",
+    "type": "function",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Mapeia comando",
+    "func": "msg.topic = 'escola/turma1/iot/atuador/cmd';\nmsg.payload = msg.payload ? 'ON' : 'OFF';\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 390,
+    "y": 360,
+    "wires": [
+      [
+        "mqtt_out_cmd"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_out_cmd",
+    "type": "mqtt out",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Publica comando atuador",
+    "topic": "",
+    "qos": "1",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "mqtt_broker_local",
+    "x": 650,
+    "y": 360,
+    "wires": []
+  },
+  {
+    "id": "ui_button_ping",
+    "type": "ui_button",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Ping",
+    "group": "ui_group_controle",
+    "order": 2,
+    "width": 6,
+    "height": 1,
+    "passthru": false,
+    "label": "Enviar PING",
+    "tooltip": "Solicita verificacao de vida do sistema",
+    "color": "",
+    "bgcolor": "",
+    "className": "",
+    "icon": "",
+    "payload": "PING",
+    "payloadType": "str",
+    "topic": "escola/turma1/iot/comando",
+    "x": 140,
+    "y": 420,
+    "wires": [
+      [
+        "mqtt_out_cmd"
+      ]
+    ]
+  },
+  {
+    "id": "inject_simulador",
+    "type": "inject",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Simular telemetria a cada 10s",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "10",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "1",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 190,
+    "y": 520,
+    "wires": [
+      [
+        "func_simulador"
+      ]
+    ]
+  },
+  {
+    "id": "func_simulador",
+    "type": "function",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Gera dados simulados",
+    "func": "const temperatura = (20 + Math.random() * 20).toFixed(1);\nconst status = Number(temperatura) > 35 ? 'ALERTA' : 'NORMAL';\n\nreturn [\n    { topic: 'escola/turma1/iot/temperatura', payload: temperatura },\n    { topic: 'escola/turma1/iot/status', payload: status }\n];",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 520,
+    "wires": [
+      [
+        "mqtt_out_sim"
+      ],
+      [
+        "mqtt_out_sim"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_out_sim",
+    "type": "mqtt out",
+    "z": "f1a2b3c4d5e6f7a8",
+    "name": "Publica telemetria simulada",
+    "topic": "",
+    "qos": "1",
+    "retain": "true",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "mqtt_broker_local",
+    "x": 700,
+    "y": 520,
+    "wires": []
+  }
+]
