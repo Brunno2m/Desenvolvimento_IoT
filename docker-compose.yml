@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+    volumes:
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+
+  node-red:
+    image: nodered/node-red:latest
+    ports:
+      - "1880:1880"
+    depends_on:
+      - mosquitto
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+    volumes:
+      - node-red-data:/data
+networks:
+  default:
+    name: node-red-net
+volumes:
+  mosquitto-data:
+  mosquitto-log:
+  node-red-data:
