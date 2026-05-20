@@ -2,10 +2,7 @@
 
 ## 1. Subir Node-RED em Docker
 ```bash
-docker rm -f nodered >/dev/null 2>&1 || true
-mkdir -p ~/nodered-data
-sudo chown -R 1000:1000 ~/nodered-data
-docker run -d --name nodered -p 1880:1880 -v ~/nodered-data:/data --restart unless-stopped nodered/node-red:latest
+node-red
 ```
 
 ## 2. Abrir Node-RED
@@ -22,8 +19,13 @@ Se aparecer aviso de no configurado em `ui_gauge` ou `ui_text`:
 
 ## 4. Importar flow
 - Importar arquivo: flows_nodered_mqtt_dashboard.json
-- Conferir broker MQTT em localhost:1883 (ou editar para seu host).
+- Conferir broker MQTT em broker.hivemq.com:1883.
 - Clicar em Deploy.
+
+Se o MQTT ficar em amarelo como "conectando":
+- Verifique se os dois containers estao ativos com `docker ps`.
+- O broker no Node-RED deve estar como host `broker.hivemq.com` e porta `1883`.
+- Apos ajustar o broker, clique em Deploy novamente.
 
 ## 5. Gerar evidencias
 - Abrir dashboard em /ui

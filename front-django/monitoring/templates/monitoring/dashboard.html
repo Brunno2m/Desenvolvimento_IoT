@@ -1,0 +1,121 @@
+{% extends "monitoring/base.html" %}
+{% load static %}
+
+{% block title %}Centro de Controle - Frota Frigorificada{% endblock %}
+
+{% block content %}
+{{ snapshot|json_script:"snapshot-data" }}
+{{ fleet_units|json_script:"fleet-data" }}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Monitoramento IoT da frota</p>
+        <h1>Controle de Frota Frigorífica</h1>
+        <p class="lead">
+            Monitoramento executivo da frota frigorificada em tempo real.
+        </p>
+    </div>
+    <div class="hero-panel">
+        <span class="hero-badge">Broker MQTT: {{ mqtt_config.broker }}</span>
+        <div class="hero-lines">
+            <div><span>Temperatura</span><strong id="hero-temperature">-- °C</strong></div>
+            <div><span>Status</span><strong id="hero-status">--</strong></div>
+            <div><span>Conexão</span><strong id="hero-connection">--</strong></div>
+        </div>
+    </div>
+</section>
+
+<section class="metrics-grid">
+    <article class="metric-card metric-highlight">
+        <span class="metric-label">Temperatura atual</span>
+        <strong class="metric-value" id="metric-temperature">--</strong>
+        <span class="metric-unit">°C na câmara principal</span>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Status da câmara</span>
+        <strong class="metric-value" id="metric-status">--</strong>
+        <span class="metric-unit">Lido de {{ mqtt_config.status_topic }}</span>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Conexão MQTT</span>
+        <strong class="metric-value" id="metric-connection">--</strong>
+        <span class="metric-unit" id="metric-source">{{ mqtt_config.temperature_topic }}</span>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Última atualização</span>
+        <strong class="metric-value" id="metric-updated">--</strong>
+        <span class="metric-unit">Histórico em tempo real</span>
+    </article>
+</section>
+
+<section class="dashboard-grid">
+    <article class="panel panel-chart">
+        <div class="panel-head">
+            <div>
+                <p class="eyebrow">Linha de telemetria</p>
+                <h2>Evolução da temperatura</h2>
+            </div>
+            <div class="panel-actions">
+                <button class="ghost-button" data-command="ON">Ligar refrigeração</button>
+                <button class="ghost-button danger" data-command="OFF">Desligar refrigeração</button>
+                <button class="ghost-button" data-command="PING">Enviar ping</button>
+            </div>
+        </div>
+        <div class="chart-shell">
+            <canvas id="temperature-chart" height="140"></canvas>
+        </div>
+        <p class="caption">Tópicos monitorados: {{ mqtt_config.temperature_topic }} e {{ mqtt_config.status_topic }}</p>
+    </article>
+
+    <aside class="panel panel-side">
+        <div class="panel-head compact">
+            <div>
+                <p class="eyebrow">Frota ativa</p>
+                <h2>Unidades frigorificadas</h2>
+            </div>
+        </div>
+        <div class="fleet-list">
+            {% for unit in fleet_units %}
+            <article class="fleet-card" data-fleet-card data-target-temperature="{{ unit.target_temperature }}" data-mode="{{ unit.mode }}" data-simulated-temperature="{{ unit.simulated_temperature|default_if_none:'' }}">
+                <div class="fleet-card-top">
+                    <div>
+                        <strong>{{ unit.code }}</strong>
+                        <span>{{ unit.plate }}</span>
+                    </div>
+                    <div class="fleet-light-wrap">
+                        <span class="fleet-pill {% if unit.mode == 'live' %}pill-live{% else %}pill-simulated{% endif %}">{{ unit.mode|title }}</span>
+                        <span class="fleet-light" data-fleet-light></span>
+                        <span class="fleet-light-label" data-fleet-label>--</span>
+                    </div>
+                </div>
+                <p>{{ unit.route }}</p>
+                <div class="fleet-meta">
+                    <span>Meta: {{ unit.target_temperature_label }}</span>
+                    <span>{{ unit.status }}</span>
+                </div>
+                <div class="fleet-reading">
+                    <span>Temperatura atual</span>
+                    <strong data-fleet-temperature>-- °C</strong>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <div class="events-box">
+            <div class="panel-head compact">
+                <div>
+                    <p class="eyebrow">Operação</p>
+                    <h2>Últimos eventos</h2>
+                </div>
+            </div>
+            <ul class="events-list" id="events-list">
+                <li>Pronto para receber telemetria do Node-RED.</li>
+            </ul>
+        </div>
+    </aside>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="{% static 'monitoring/js/dashboard.js' %}"></script>
+{% endblock %}

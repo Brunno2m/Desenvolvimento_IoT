@@ -1,0 +1,21 @@
+flowchart LR
+    %% Fluxo simplificado e funcional do projeto IoT
+    ESP[ESP32 / Wokwi] -->|mqtt publish| BROKER[(Broker MQTT)]
+    BROKER -->|logistica/frio/temperatura| NR[Node-RED]
+    BROKER -->|logistica/frio/status| NR
+    NR -->|estado consolidado| DJ[Django Front-end]
+    DJ -->|GET /state| NR
+    DJ -->|POST /command| NR
+    NR -->|logistica/frio/comando| BROKER
+    BROKER -->|command| ESP
+    NR --> DB[(Contexto local / persistência)]
+    NR --> UI[Dashboard Node-RED]
+    UI --> NR
+
+    classDef core fill:#102a43,stroke:#7cc4ff,color:#ffffff,stroke-width:1px;
+    classDef edge fill:#1f2937,stroke:#9ca3af,color:#ffffff,stroke-width:1px;
+    classDef db fill:#0f5132,stroke:#34d399,color:#ffffff,stroke-width:1px;
+
+    class NR,UI core;
+    class ESP,BROKER,DJ edge;
+    class DB db;

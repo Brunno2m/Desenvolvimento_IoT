@@ -1,0 +1,16 @@
+[wokwi]
+version = 1
+firmware = 'sketch.ino'
+elf = 'build/firmware.elf'
+
+[[components]]
+name = 'esp32'
+
+[[components]]
+name = 'dht22'
+
+[[components]]
+name = 'led'
+
+[[components]]
+name = 'led'

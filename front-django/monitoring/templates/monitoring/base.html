@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Frota Frigorificada{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'monitoring/css/style.css' %}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="ambient ambient-left"></div>
+    <div class="ambient ambient-right"></div>
+    <main class="shell">
+        {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

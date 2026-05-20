@@ -1,0 +1,149 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+3 0 obj
+<< /Length 1346 >>
+stream
+0.13 0.28 0.20 rg 0.13 0.28 0.20 RG
+54 751.89 487 2 re f
+0 0 0 rg 0 0 0 RG
+BT /F2 20.00 Tf 1 0 0 1 54.00 787.89 Tm (IFRN - Parnamirim) Tj ET
+BT /F2 16.00 Tf 1 0 0 1 54.00 744.89 Tm (Programação para Internet das Coisas) Tj ET
+BT /F2 22.00 Tf 1 0 0 1 54.00 681.29 Tm (Relatório do Projeto IoT) Tj ET
+BT /F1 14.00 Tf 1 0 0 1 54.00 637.59 Tm (Integracão entre Wokwi, Node-RED e Django para monitoramento de) Tj ET
+BT /F1 14.00 Tf 1 0 0 1 54.00 618.69 Tm (frota frigorificada) Tj ET
+BT /F2 12.00 Tf 1 0 0 1 54.00 559.79 Tm (Componentes do grupo) Tj ET
+BT /F1 12.00 Tf 1 0 0 1 54.00 543.59 Tm (- Brunno de Melo Marques) Tj ET
+BT /F1 12.00 Tf 1 0 0 1 54.00 527.39 Tm (- Emanuel Correia Tavares) Tj ET
+BT /F1 12.00 Tf 1 0 0 1 54.00 511.19 Tm (- Brunno de Melo Marques) Tj ET
+BT /F1 12.00 Tf 1 0 0 1 54.00 494.99 Tm (- Emanuel Correia Tavares) Tj ET
+BT /F2 12.00 Tf 1 0 0 1 54.00 458.79 Tm (Data: Maio de 2026) Tj ET
+BT /F1 11.00 Tf 1 0 0 1 54.00 418.59 Tm (Projeto desenvolvido com foco em monitoramento IoT, mensageria MQTT e dashboard web.) Tj ET
+0.13 0.28 0.20 rg 0.13 0.28 0.20 RG
+54 88 487 1.2 re f
+0 0 0 rg 0 0 0 RG
+BT /F2 11.00 Tf 1 0 0 1 54.00 373.74 Tm (IFRN - Campus Parnamirim) Tj ET
+0.45 0.45 0.45 rg 0.45 0.45 0.45 RG
+BT /F1 9 Tf 1 0 0 1 54 28 Tm (IFRN - Parnamirim | Programacao para Internet das Coisas | Pagina 1) Tj ET
+0 0 0 rg 0 0 0 RG
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Length 3834 >>
+stream
+BT /F2 16.00 Tf 1 0 0 1 54.00 779.89 Tm (1. Introdução) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 747.89 Tm (Este projeto apresenta uma solução de Internet das Coisas voltada ao) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 732.89 Tm (monitoramento de uma frota de caminhões frigorificados. A proposta integra) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 717.89 Tm (simulador de hardware, mensageria MQTT, automação de fluxo e interface web,) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 702.89 Tm (permitindo visualizar em tempo quase real a temperatura da câmara e o estado) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 687.89 Tm (operacional da frota.) Tj ET
+BT /F2 16.00 Tf 1 0 0 1 54.00 664.89 Tm (2. Objetivo) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 632.89 Tm (Desenvolver uma aplicação web capaz de receber telemetria de temperatura,) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 617.89 Tm (processar os dados publicados pelo dispositivo simulado e exibi-los em um painel) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 602.89 Tm (visual profissional, com foco em operação logística e rastreio térmico.) Tj ET
+BT /F2 16.00 Tf 1 0 0 1 54.00 579.89 Tm (3. Solução proposta) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 547.89 Tm (A solução foi estruturada com os seguintes componentes:) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 524.89 Tm (- **Wokwi:** simula o dispositivo embarcado com ESP32, sensor DHT22 e LEDs de) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 509.89 Tm (indicação.) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 494.89 Tm (- **Broker MQTT:** recebe as mensagens publicadas pelo dispositivo e distribui) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 479.89 Tm (os dados aos consumidores.) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 464.89 Tm (- **Node-RED:** atua como camada de integração e automação, consumindo a) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 449.89 Tm (telemetria do broker.) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 434.89 Tm (- **Django:** fornece a interface visual principal, com dashboard de frota,) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 419.89 Tm (leitura de temperatura e acompanhamento do estado do sistema.) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 396.89 Tm (O fluxo foi organizado para que a temperatura gerada no Wokwi seja publicada em) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 381.89 Tm (um tópico MQTT e consumida pelo painel Django. O Node-RED participa do) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 366.89 Tm (ecossistema como componente de integração e observação do tráfego MQTT.) Tj ET
+BT /F2 16.00 Tf 1 0 0 1 54.00 343.89 Tm (4. Arquitetura do sistema) Tj ET
+BT /F2 13.00 Tf 1 0 0 1 54.00 311.89 Tm (4.1. Dispositivo simulado) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 283.89 Tm (O código do Wokwi utiliza um ESP32, conexão Wi-Fi e a biblioteca PubSubClient) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 268.89 Tm (para enviar a temperatura lida pelo DHT22 ao broker MQTT. O envio é feito no) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 253.89 Tm (tópico `logistica/frio/temperatura`.) Tj ET
+BT /F2 13.00 Tf 1 0 0 1 54.00 230.89 Tm (4.2. Camada de mensageria) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 202.89 Tm (O broker MQTT atua como ponto central da comunicação, recebendo as mensagens do) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 187.89 Tm (Wokwi e repassando-as para os assinantes interessados, entre eles o Node-RED e o) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 172.89 Tm (Django.) Tj ET
+BT /F2 13.00 Tf 1 0 0 1 54.00 149.89 Tm (4.3. Camada de integração) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 121.89 Tm (O Node-RED recebe o fluxo de dados MQTT, permitindo visualização, automação e) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 106.89 Tm (futuras expansões de controle. Ele funciona como ponte de observação entre a) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 91.89 Tm (telemetria e a interface web.) Tj ET
+0.45 0.45 0.45 rg 0.45 0.45 0.45 RG
+BT /F1 9 Tf 1 0 0 1 54 28 Tm (IFRN - Parnamirim | Programacao para Internet das Coisas | Pagina 2) Tj ET
+0 0 0 rg 0 0 0 RG
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 2944 >>
+stream
+BT /F2 13.00 Tf 1 0 0 1 54.00 779.89 Tm (4.4. Interface web) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 751.89 Tm (O Django foi desenvolvido como dashboard executivo da frota, apresentando a) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 736.89 Tm (temperatura atual, o estado de conexão, o histórico de leitura e cartões visuais) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 721.89 Tm (dos veículos. O primeiro caminhão utiliza a telemetria real; os demais são) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 706.89 Tm (exibidos com dados simulados para reforçar a percepção de frota operacional.) Tj ET
+BT /F2 16.00 Tf 1 0 0 1 54.00 683.89 Tm (5. Funcionalidades implementadas) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 651.89 Tm (- Monitoramento de temperatura em tempo real.) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 636.89 Tm (- Indicação visual por meio de LED verde ou vermelho na frota.) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 621.89 Tm (- Exibição de histórico da telemetria.) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 606.89 Tm (- Painel com visual limpo e profissional.) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 591.89 Tm (- Separação entre o caminhão monitorado ao vivo e os demais cartões simulados.) Tj ET
+BT /F2 16.00 Tf 1 0 0 1 54.00 568.89 Tm (6. Resultados obtidos) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 536.89 Tm (A integração entre Wokwi, MQTT, Node-RED e Django permitiu construir uma solução) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 521.89 Tm (funcional de monitoramento IoT. O painel web passou a refletir a telemetria) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 506.89 Tm (publicada pelo dispositivo simulado, oferecendo uma visão clara do estado térmico) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 491.89 Tm (da operação.) Tj ET
+BT /F2 16.00 Tf 1 0 0 1 54.00 468.89 Tm (7. Conclusão) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 436.89 Tm (O projeto demonstrou, na prática, como tecnologias de IoT podem ser combinadas) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 421.89 Tm (para construir um sistema de monitoramento logístico com boa usabilidade e) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 406.89 Tm (arquitetura simples. A solução atende ao objetivo de representar uma frota) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 391.89 Tm (frigorificada com destaque para o controle de temperatura, elemento essencial em) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 54.00 376.89 Tm (operações de transporte refrigerado.) Tj ET
+BT /F2 16.00 Tf 1 0 0 1 54.00 353.89 Tm (8. Tecnologias utilizadas) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 321.89 Tm (- ESP32 no simulador Wokwi) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 306.89 Tm (- Sensor DHT22) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 291.89 Tm (- Protocolo MQTT) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 276.89 Tm (- Node-RED) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 261.89 Tm (- Django) Tj ET
+BT /F1 11.50 Tf 1 0 0 1 60.00 246.89 Tm (- HTML, CSS e JavaScript) Tj ET
+0.45 0.45 0.45 rg 0.45 0.45 0.45 RG
+BT /F1 9 Tf 1 0 0 1 54 28 Tm (IFRN - Parnamirim | Programacao para Internet das Coisas | Pagina 3) Tj ET
+0 0 0 rg 0 0 0 RG
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 9 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R] /Count 3 >>
+endobj
+10 0 obj
+<< /Type /Catalog /Pages 9 0 R >>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000015 00000 n 
+0000000112 00000 n 
+0000000214 00000 n 
+0000001612 00000 n 
+0000001754 00000 n 
+0000005640 00000 n 
+0000005782 00000 n 
+0000008778 00000 n 
+0000008920 00000 n 
+0000008989 00000 n 
+trailer
+<< /Size 11 /Root 10 0 R >>
+startxref
+9039
+%%EOF

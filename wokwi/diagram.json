@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "author": "Copilot",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -120, "left": 320, "attrs": {} },
+    { "type": "wokwi-led", "id": "led-green", "top": 120, "left": 320, "attrs": { "color": "green" } },
+    { "type": "wokwi-led", "id": "led-red", "top": 180, "left": 320, "attrs": { "color": "red" } }
+  ],
+  "connections": [
+    ["esp:15", "dht1:DATA", "green", ["v0"]],
+    ["esp:3V3", "dht1:VCC", "red", ["v0"]],
+    ["esp:GND.1", "dht1:GND", "black", ["v0"]],
+    ["esp:4", "led-green:A", "green", ["v0"]],
+    ["esp:GND.2", "led-green:C", "black", ["v0"]],
+    ["esp:2", "led-red:A", "red", ["v0"]],
+    ["esp:GND.2", "led-red:C", "black", ["v0"]]
+  ],
+  "dependencies": {}
+}
