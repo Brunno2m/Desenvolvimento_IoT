@@ -86,7 +86,7 @@ MQTT_HOST = env("MQTT_HOST", "broker.hivemq.com")
 MQTT_PORT = int(env("MQTT_PORT", "1883"))
 MQTT_BROKERS = [
     broker.strip()
-    for broker in env("MQTT_BROKERS", f"{MQTT_HOST}:{MQTT_PORT},localhost:1883").split(",")
+    for broker in env("MQTT_BROKERS", f"{MQTT_HOST}:{MQTT_PORT}").split(",")
     if broker.strip()
 ]
 MQTT_USERNAME = env("MQTT_USERNAME", "")
