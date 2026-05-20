@@ -18,3 +18,6 @@ Isso sobe:
 ## Django
 
 Para a interface do Django receber os dados, o broker Mosquitto precisa estar ativo. Se estiver executando o Django fora do Docker, mantenha `MQTT_HOST=localhost` e `MQTT_PORT=1883`.
+
+
+cd /workspaces/Desenvolvimento_IoT/front-django && source .venv/bin/activate
