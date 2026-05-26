@@ -371,6 +371,16 @@ body {
     font-size: 1.2rem;
 }
 
+.fleet-chart-shell {
+    height: 92px;
+    margin-top: 12px;
+}
+
+.fleet-chart-shell canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 .fleet-reading span {
     color: var(--muted);
 }
@@ -417,6 +427,10 @@ body {
     .metrics-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .fleet-chart-shell {
+        height: 82px;
+    }
 }
 
 @media (max-width: 760px) {
@@ -444,5 +458,9 @@ body {
 
     .chart-shell {
         height: 280px;
+    }
+
+    .fleet-chart-shell {
+        height: 76px;
     }
 }

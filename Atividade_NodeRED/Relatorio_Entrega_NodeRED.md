@@ -33,10 +33,10 @@ Passos:
 4. Deploy.
 
 ## 4. Topicos MQTT utilizados
-- escola/turma1/iot/temperatura (telemetria)
-- escola/turma1/iot/status (estado do sistema)
-- escola/turma1/iot/atuador/cmd (comando ON/OFF)
-- escola/turma1/iot/comando (comando PING)
+- logistica/frio/<device_id>/temperatura (telemetria por caminhão)
+- logistica/frio/<device_id>/status (estado por caminhão)
+- logistica/frio/<device_id>/comando (comando direcionado)
+- logistica/frio/comando (comando broadcast / compatibilidade)
 
 ## 5. Evidencias da Entrega (obrigatorio)
 Inserir as imagens na pasta imagens e manter os nomes abaixo.
@@ -54,7 +54,7 @@ Inserir as imagens na pasta imagens e manter os nomes abaixo.
 ![Mensagens MQTT em terminal](imagens/mqtt_terminal.png)
 
 ## 6. Resultado observado
-O dashboard exibiu corretamente o estado do sistema por meio dos topicos MQTT de temperatura e status. Tambem foi possivel atuar no sistema pelo switch/botao, publicando comandos no topico do atuador.
+O dashboard exibiu corretamente o estado do sistema por meio dos topicos MQTT de temperatura e status, agora separando as mensagens por `device_id`. Tambem foi possivel atuar no sistema pelo switch/botao, publicando comandos no topico do atuador.
 
 ## 7. Arquivos entregues
 - imagens do dashboard
@@ -62,4 +62,4 @@ O dashboard exibiu corretamente o estado do sistema por meio dos topicos MQTT de
 - json exportado do Node-RED (flows_nodered_mqtt_dashboard.json)
 
 ## 8. Observacoes
-Se estiver em Codespaces e nao abrir a porta 1880 externamente, torne a porta publica ou use o encaminhamento de portas do ambiente. Para receber os dados no Django, o broker do Wokwi precisa estar ativo em broker.hivemq.com:1883 e o Node-RED deve apontar para o mesmo broker e tópico.
+Se estiver em Codespaces e nao abrir a porta 1880 externamente, torne a porta publica ou use o encaminhamento de portas do ambiente. Para receber os dados no Django, cada simulador Wokwi precisa publicar com um `device_id` diferente e o Node-RED deve apontar para o mesmo broker e padrão de tópico.

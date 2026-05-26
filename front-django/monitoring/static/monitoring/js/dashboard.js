@@ -1,7 +1,5 @@
 (function () {
     const snapshot = JSON.parse(document.getElementById("snapshot-data").textContent);
-    // Node-RED base URL (ajuste se Node-RED estiver em outro host/porta)
-    const NODERED_BASE = "http://localhost:1880";
     const eventsList = document.getElementById("events-list");
     const temperatureNode = document.getElementById("metric-temperature");
     const statusNode = document.getElementById("metric-status");
@@ -12,7 +10,9 @@
     const heroStatus = document.getElementById("hero-status");
     const heroConnection = document.getElementById("hero-connection");
     const fleetCards = Array.from(document.querySelectorAll("[data-fleet-card]"));
-    const history = snapshot.history || [];
+    const fleetCharts = new Map();
+    const initialFleetUnits = Array.isArray(snapshot.fleet_units) ? snapshot.fleet_units : [];
+    let lastEventSignature = "";
 
     function formatTemperature(value) {
         if (value === null || value === undefined || Number.isNaN(Number(value))) {
@@ -42,7 +42,102 @@
         return "";
     }
 
+    function getUnitHistory(unit) {
+        return Array.isArray(unit?.history) ? unit.history : [];
+    }
+
+    function getUnitColor(unit) {
+        if (unit?.is_live) {
+            return "#64d29f";
+        }
+        return "#8bb4ff";
+    }
+
+    function ensureMiniChart(canvas, unit) {
+        if (!canvas) {
+            return null;
+        }
+
+        const history = getUnitHistory(unit);
+        const labels = history.map((entry) => formatDate(entry.timestamp));
+        const dataset = history.map((entry) => entry.temperature);
+        const existing = fleetCharts.get(canvas);
+
+        if (existing) {
+            existing.data.labels = labels;
+            existing.data.datasets[0].label = unit?.code || unit?.device_id || "Unidade";
+            existing.data.datasets[0].data = dataset;
+            existing.data.datasets[0].borderColor = getUnitColor(unit);
+            existing.data.datasets[0].backgroundColor = `${getUnitColor(unit)}22`;
+            existing.update("none");
+            return existing;
+        }
+
+        const chart = new Chart(canvas, {
+            type: "line",
+            data: {
+                labels,
+                datasets: [{
+                    label: unit?.code || unit?.device_id || "Unidade",
+                    data: dataset,
+                    borderColor: getUnitColor(unit),
+                    backgroundColor: `${getUnitColor(unit)}22`,
+                    tension: 0.35,
+                    fill: true,
+                    pointRadius: 1.5,
+                    pointHoverRadius: 3,
+                    borderWidth: 2,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label(context) {
+                                return `${context.dataset.label}: ${formatTemperature(context.parsed.y)} °C`;
+                            },
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        ticks: { display: false },
+                        grid: { display: false },
+                    },
+                    y: {
+                        ticks: { color: "#9ab5aa", maxTicksLimit: 3 },
+                        grid: { color: "rgba(255,255,255,0.05)" },
+                    },
+                },
+            },
+        });
+
+        fleetCharts.set(canvas, chart);
+        return chart;
+    }
+
+    function pickActiveUnit(data, fleetUnits) {
+        const activeId = data.latest_device_id;
+        if (activeId) {
+            const activeUnit = fleetUnits.find((unit) => unit.device_id === activeId);
+            if (activeUnit) {
+                return activeUnit;
+            }
+        }
+
+        return fleetUnits.find((unit) => unit.is_live) || fleetUnits[0] || null;
+    }
+
     function pushEvent(message, tone) {
+        const signature = `${tone || ""}|${message || ""}`;
+        if (signature === lastEventSignature) {
+            return;
+        }
+        lastEventSignature = signature;
         const item = document.createElement("li");
         item.className = tone || "";
         item.textContent = message;
@@ -53,22 +148,27 @@
     }
 
     function renderState(data) {
-        const currentTemperature = Number(data.latest_temperature);
+        const fleetUnits = Array.isArray(data.fleet_units) && data.fleet_units.length ? data.fleet_units : initialFleetUnits;
+        const activeUnit = pickActiveUnit(data, fleetUnits);
+        const currentTemperature = Number(activeUnit?.latest_temperature ?? data.latest_temperature);
         const isTemperatureAvailable = !Number.isNaN(currentTemperature);
 
-        temperatureNode.textContent = `${formatTemperature(data.latest_temperature)} °C`;
-        statusNode.textContent = data.latest_status || "--";
+        temperatureNode.textContent = `${formatTemperature(activeUnit?.latest_temperature ?? data.latest_temperature)} °C`;
+        statusNode.textContent = activeUnit?.latest_status || data.latest_status || "--";
         connectionNode.textContent = data.mqtt_connected ? "Ativo" : "Offline";
-        sourceNode.textContent = data.mqtt_source || "Origem MQTT indisponível";
+        sourceNode.textContent = activeUnit ? `${activeUnit.code} · ${activeUnit.device_id}` : (data.mqtt_source || "Origem MQTT indisponível");
         updatedNode.textContent = formatDate(data.last_updated);
-        heroTemperature.textContent = `${formatTemperature(data.latest_temperature)} °C`;
-        heroStatus.textContent = data.latest_status || "--";
+        heroTemperature.textContent = `${formatTemperature(activeUnit?.latest_temperature ?? data.latest_temperature)} °C`;
+        heroStatus.textContent = activeUnit?.latest_status || data.latest_status || "--";
         heroConnection.textContent = data.mqtt_message || "--";
 
         fleetCards.forEach((card) => {
+            const deviceId = card.dataset.deviceId;
+            const unit = fleetUnits.find((item) => item.device_id === deviceId) || null;
             const light = card.querySelector("[data-fleet-light]");
             const label = card.querySelector("[data-fleet-label]");
             const reading = card.querySelector("[data-fleet-temperature]");
+            const miniChartCanvas = card.querySelector("[data-fleet-chart]");
             if (!light || !label) {
                 return;
             }
@@ -76,7 +176,7 @@
             const targetTemperature = Number(card.dataset.targetTemperature);
             const mode = card.dataset.mode;
             const simulatedTemperature = Number(card.dataset.simulatedTemperature);
-            const temperatureValue = mode === "live" ? currentTemperature : simulatedTemperature;
+            const temperatureValue = unit?.latest_temperature ?? (mode === "live" ? currentTemperature : simulatedTemperature);
             const temperatureAvailable = !Number.isNaN(temperatureValue);
             const isTemperatureIdeal = temperatureAvailable && !Number.isNaN(targetTemperature) && temperatureValue <= targetTemperature;
 
@@ -94,34 +194,38 @@
 
             light.classList.toggle("is-green", isTemperatureIdeal);
             light.classList.toggle("is-red", !isTemperatureIdeal);
-            label.textContent = mode === "live"
+            label.textContent = unit?.is_live
                 ? (isTemperatureIdeal ? "Ao vivo / OK" : "Ao vivo / alerta")
                 : (isTemperatureIdeal ? "Simulado / OK" : "Simulado / alerta");
             if (reading) {
                 reading.textContent = `${formatTemperature(temperatureValue)} °C`;
             }
+
+            ensureMiniChart(miniChartCanvas, unit || { code: card.querySelector("strong")?.textContent, device_id: deviceId, history: [] });
         });
 
-        if (data.history && data.history.length) {
-            chart.data.labels = data.history.map((entry) => formatDate(entry.timestamp));
-            chart.data.datasets[0].data = data.history.map((entry) => entry.temperature);
-            chart.update("none");
-        }
+        const mainHistory = getUnitHistory(activeUnit);
+        const chartHistory = mainHistory.length ? mainHistory : (Array.isArray(data.history) ? data.history : []);
+        chart.data.labels = chartHistory.map((entry) => formatDate(entry.timestamp));
+        chart.data.datasets[0].label = activeUnit?.code || activeUnit?.device_id || "Temperatura da frota";
+        chart.data.datasets[0].data = chartHistory.map((entry) => entry.temperature);
+        chart.update("none");
 
-        const latestEvent = data.latest_status
-            ? `Status atualizado para ${data.latest_status}`
-            : "Aguardando status do Node-RED";
-        const tone = statusClass(data.latest_status);
-        pushEvent(latestEvent, tone);
+        if (activeUnit) {
+            const latestEvent = `${activeUnit.code}: ${formatTemperature(activeUnit.latest_temperature)} °C · ${activeUnit.latest_status || "--"}`;
+            pushEvent(latestEvent, statusClass(activeUnit.latest_status));
+        } else if (data.latest_status) {
+            pushEvent(`Status atualizado para ${data.latest_status}`, statusClass(data.latest_status));
+        }
     }
 
     const chart = new Chart(document.getElementById("temperature-chart"), {
         type: "line",
         data: {
-            labels: history.map((entry) => formatDate(entry.timestamp)),
+            labels: (snapshot.history || []).map((entry) => formatDate(entry.timestamp)),
             datasets: [{
-                label: "Temperatura da câmara",
-                data: history.map((entry) => entry.temperature),
+                label: "Temperatura da frota",
+                data: (snapshot.history || []).map((entry) => entry.temperature),
                 borderColor: "#64d29f",
                 backgroundColor: "rgba(100, 210, 159, 0.12)",
                 tension: 0.35,
@@ -159,25 +263,7 @@
 
     renderState(snapshot);
 
-    async function fetchNodeRed(path, options) {
-        try {
-            const response = await fetch(`${NODERED_BASE}${path}`, options);
-            if (!response.ok) throw new Error('HTTP ' + response.status);
-            return await response.json();
-        } catch (err) {
-            return null;
-        }
-    }
-
     async function refreshState() {
-        // Prioriza Node-RED
-        const nr = await fetchNodeRed('/state');
-        if (nr && nr.success) {
-            renderState(nr.data);
-            return;
-        }
-
-        // Fallback para API Django
         try {
             const response = await fetch('/api/state/');
             const payload = await response.json();
@@ -193,18 +279,6 @@
     }
 
     async function sendCommand(command) {
-        // Tenta enviar via Node-RED primeiro
-        const nr = await fetchNodeRed('/command', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ command }),
-        });
-        if (nr) {
-            pushEvent(nr.message, nr.success ? 'event-status-ok' : 'event-status-error');
-            return;
-        }
-
-        // Fallback para Django
         try {
             const response = await fetch('/api/command/', {
                 method: 'POST',

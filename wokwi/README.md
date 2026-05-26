@@ -9,9 +9,12 @@ Arquivos:
 - `wokwi.toml`: configuração do projeto
 
 Tópicos MQTT:
-- `logistica/frio/temperatura`
-- `logistica/frio/status`
-- `logistica/frio/comando`
+- `logistica/frio/<device_id>/temperatura`
+- `logistica/frio/<device_id>/status`
+- `logistica/frio/<device_id>/comando`
+- `logistica/frio/comando` (comando broadcast compatível com a versão anterior)
+
+Antes de duplicar a simulação no Wokwi, altere a constante `device_id` no `sketch.ino` para um valor único, como `truck-01`, `truck-02` e `truck-03`.
 
 Comandos aceitos no tópico de comando:
 - `ON`

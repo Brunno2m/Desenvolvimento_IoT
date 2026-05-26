@@ -75,7 +75,7 @@
         </div>
         <div class="fleet-list">
             {% for unit in fleet_units %}
-            <article class="fleet-card" data-fleet-card data-target-temperature="{{ unit.target_temperature }}" data-mode="{{ unit.mode }}" data-simulated-temperature="{{ unit.simulated_temperature|default_if_none:'' }}">
+            <article class="fleet-card" data-fleet-card data-device-id="{{ unit.device_id }}" data-target-temperature="{{ unit.target_temperature }}" data-mode="{{ unit.mode }}" data-simulated-temperature="{{ unit.simulated_temperature|default_if_none:'' }}">
                 <div class="fleet-card-top">
                     <div>
                         <strong>{{ unit.code }}</strong>
@@ -95,6 +95,9 @@
                 <div class="fleet-reading">
                     <span>Temperatura atual</span>
                     <strong data-fleet-temperature>-- °C</strong>
+                </div>
+                <div class="fleet-chart-shell">
+                    <canvas data-fleet-chart height="90"></canvas>
                 </div>
             </article>
             {% endfor %}

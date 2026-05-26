@@ -97,3 +97,4 @@ MQTT_STATUS_TOPIC = env("MQTT_STATUS_TOPIC", "logistica/frio/status")
 MQTT_COMMAND_TOPIC = env("MQTT_COMMAND_TOPIC", "logistica/frio/comando")
 MQTT_PING_TOPIC = env("MQTT_PING_TOPIC", "logistica/frio/comando")
 MQTT_CLIENT_ENABLED = env("MQTT_CLIENT_ENABLED", "1") == "1"
+NODE_RED_BASE_URL = env("NODE_RED_BASE_URL", "http://localhost:1880")
